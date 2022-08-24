@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as JsonStrategy } from "passport-json";
 
 import User from "../models/User";
 
@@ -64,6 +65,29 @@ passport.use(
       }
 
       return done(null, user);
+    }
+  )
+);
+
+passport.use(
+  "local-json",
+  new JsonStrategy(
+    {
+      usernameProp: "email",
+      passwordProp: "password",
+    },
+    async (username, password, done) => {
+      const user = await User.findOne({ email: username });
+      console.log(user);
+      if (user) {
+        return done(null, false);
+      } else {
+        const newUser = new User();
+        newUser.email = username;
+        newUser.password = newUser.encryptPassword(password);
+        await newUser.save();
+        done(null, newUser);
+      }
     }
   )
 );

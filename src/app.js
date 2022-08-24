@@ -6,6 +6,7 @@ import morgan from "morgan";
 import passport from "passport";
 import path from "path";
 import session from "express-session";
+import bodyParser from "body-parser";
 
 import authRoutes from "./routes/auth.routes";
 import dashboardRoutes from "./routes/dashboard.routes";
@@ -49,6 +50,7 @@ app.use(
   })
 );
 app.use(flash());
+app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 

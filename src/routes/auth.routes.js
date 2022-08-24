@@ -44,4 +44,13 @@ router.get("/logout", isAuthorized, (req, res, next) => {
   res.redirect("/");
 });
 
+router.post(
+  "/createuser",
+  passport.authenticate("local-json", {
+    successRedirect: "/auth/profile",
+    failureRedirect: "/auth/signup",
+    passReqToCallback: true,
+  })
+);
+
 export default router;
