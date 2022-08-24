@@ -1,5 +1,6 @@
 import express from "express";
 import { create } from "express-handlebars";
+import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import morgan from "morgan";
 import passport from "passport";
@@ -47,12 +48,15 @@ app.use(
     },
   })
 );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Global variables
 app.use((req, res, next) => {
   app.locals.user = req.user;
+  app.locals.loginMessage = req.flash("loginMessage");
+  app.locals.signupMessage = req.flash("signupMessage");
   next();
 });
 
