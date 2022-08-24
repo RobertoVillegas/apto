@@ -55,6 +55,7 @@ app.use(passport.session());
 // Global variables
 app.use((req, res, next) => {
   app.locals.user = req.user;
+  app.locals.email = req.user ? req.user.email : null;
   app.locals.loginMessage = req.flash("loginMessage");
   app.locals.signupMessage = req.flash("signupMessage");
   next();
